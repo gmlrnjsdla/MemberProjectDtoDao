@@ -3,19 +3,25 @@ package com.heekwoncompany.member;
 import java.sql.*;
 
 public class MemberDao {
-	int dbFlag;
+	
 	
 	static String driverName = "com.mysql.jdbc.Driver";
 	static String url ="jdbc:mysql://localhost:3306/serverdb";
 	static String user = "root";
 	static String pass = "1234";
 	
-	public int insertMember(String id, String pw, String name, String email) {
+	public int insertMember(MemberDto dto) {
+		
+		String id = dto.getId();
+		String pw = dto.getPw();
+		String name = dto.getUsername();
+		String email = dto.getEmail();
 		
 		String sql = "INSERT INTO members(id,pw,username,email) VALUES ('"+id+"','"+pw+"','"+name+"','"+email+"')";
 		
 		Connection conn = null;
 		Statement stmt = null;
+		int dbFlag=0;
 		
 		try {
 			Class.forName(driverName);

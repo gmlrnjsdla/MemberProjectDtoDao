@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="com.heekwoncompany.member.MemberDao" %>    
+<%@ page import="com.heekwoncompany.member.MemberDao" %>
+<%@ page import="com.heekwoncompany.member.MemberDto" %>    
 <% request.setCharacterEncoding("utf-8"); %>    
 <!DOCTYPE html>
 <html>
@@ -16,9 +17,15 @@
 		String pw = request.getParameter("pw");
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
+		
+		MemberDto dto = new MemberDto();
+		dto.setId(id);
+		dto.setPw(pw);
+		dto.setUsername(name);
+		dto.setEmail(email);
 	
 		MemberDao dao = new MemberDao();
-		int joinCheck = dao.insertMember(id, pw, name, email);
+		int joinCheck = dao.insertMember(dto);
 		
 		if(joinCheck == 1){
 			out.println("회원가입 성공! 가입을 축하드립니다.");
