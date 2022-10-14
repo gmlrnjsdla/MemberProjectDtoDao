@@ -156,4 +156,105 @@ public class MemberDao {
 		//1이 반환되면 로그인 성공, 0이 반환되면 회원 아님, 2가 반환되면 비밀번호만 틀림
 	}
 	
+	public MemberDto getMemberInfo(String id) {  // 아이디로 테이블을 검색하여 해당 아이디의 모든 정보 반환
+		
+		MemberDto dto = null;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		
+		String sql = "SELECT * FROM members WHERE id=?";
+		
+		try {
+			Class.forName(driverName);
+			conn = DriverManager.getConnection(url, user, pass);
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1,id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto = new MemberDto();
+				
+				String dbID = rs.getString("id");
+				String dbPW = rs.getString("pw");
+				String dbUsername = rs.getString("username");
+				String dbEmail = rs.getString("email");
+				String dbSignuptime = rs.getString("signuptime");
+				
+				dto.setId(dbID);
+				dto.setPw(dbPW);
+				dto.setUsername(dbUsername);
+				dto.setEmail(dbEmail);
+				dto.setSignuptime(dbSignuptime);
+			}
+			
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return dto;
+	}
+	
+	public int modifyMemberInfo(MemberDto dto) { //수정된 회원정도 DB에 다시넣기
+		int updateFlag = 0;
+			
+		String sql = "UPDATE members SET pw=?, username=?, email=? WHERE id=?";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		
+		try {
+			Class.forName(driverName);
+			conn = DriverManager.getConnection(url, user, pass);
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, dto.getPw());
+			pstmt.setString(2, dto.getUsername());
+			pstmt.setString(3, dto.getEmail());
+			pstmt.setString(4, dto.getId());
+			
+			updateFlag = pstmt.executeUpdate(); // 수정 성공이면 1반환 아니면 다른값
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return updateFlag; //1이면 업데이트 성공, 0이면 업데이트 실패
+	}
+	
 }
