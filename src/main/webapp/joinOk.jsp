@@ -40,10 +40,10 @@
 			else{
 				out.println("회원가입 실패! 가입사항을 다시 확인해주세요.");
 			}
-		}
-		
-		
+		}	
 		
 	%>
+	<br><br>
+	<a href="login.jsp">로그인화면으로 가기</a>
 </body>
 </html>

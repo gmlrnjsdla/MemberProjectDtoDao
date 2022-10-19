@@ -221,33 +221,36 @@ public class MemberDao {
 	}
 	
 	
-	public int modifyMemberInfo(MemberDto dto) { //수정된 회원정도 DB에 다시넣기
+	public int modifyMemberInfo(MemberDto dto) {//modify.jsp에서 보내준 수정된 회원정보를 DB에 다시 넣기(update)
 		int updateFlag = 0;
-			
-		String sql = "UPDATE members SET pw=?, username=?, email=? WHERE id=?";
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
+		String sql = "UPDATE members SET pw=?, username=?, email=? WHERE id=?";
 		
 		try {
 			Class.forName(driverName);
 			conn = DriverManager.getConnection(url, user, pass);
 			
 			pstmt = conn.prepareStatement(sql);
+			
 			pstmt.setString(1, dto.getPw());
 			pstmt.setString(2, dto.getUsername());
 			pstmt.setString(3, dto.getEmail());
 			pstmt.setString(4, dto.getId());
 			
-			updateFlag = pstmt.executeUpdate(); // 수정 성공이면 1반환 아니면 다른값
+			updateFlag  = pstmt.executeUpdate();//수정 성공이면 1이 반환, 아니면 다른 값 반환
 			
-		} catch (Exception e) {
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
-				if(pstmt != null) {
+				if(pstmt != null) {				
 					pstmt.close();
 				}
 				if(conn != null) {
@@ -259,7 +262,49 @@ public class MemberDao {
 			}
 		}
 		
-		return updateFlag; //1이면 업데이트 성공, 0이면 업데이트 실패
+		return updateFlag;//1이 반환되면 정보수정 성공, 아니면 정보수정 실패	
+	}
+
+	public int delete(String id) {
+		int deleteFlag = 0;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		String sql = "DELETE FROM members WHERE id=?";
+		
+		try {
+			Class.forName(driverName);
+			conn = DriverManager.getConnection(url, user, pass);
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, id);
+			
+			
+			deleteFlag  = pstmt.executeUpdate();//수정 성공이면 1이 반환, 아니면 다른 값 반환
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if(pstmt != null) {				
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return deleteFlag; // 회원 탈퇴성공하면 1 아니면 0 반환
 	}
 	
 }

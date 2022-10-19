@@ -23,6 +23,8 @@
 			<a href="logout.jsp">로그아웃</a>
 			<br><br>
 			<a href="modify.jsp">회원 정보 수정</a>
+			<br><br>
+			<a href="deleteMember.jsp">회원 탈퇴</a>
 	<%
 		}
 	%>
