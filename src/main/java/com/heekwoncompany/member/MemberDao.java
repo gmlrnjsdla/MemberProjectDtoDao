@@ -10,6 +10,7 @@ public class MemberDao {
 	static String user = "root";
 	static String pass = "1234";
 	
+	
 	public int insertMember(MemberDto dto) {
 		
 		String id = dto.getId();
@@ -48,6 +49,7 @@ public class MemberDao {
 		
 		return dbFlag;
 	}
+	
 	
 	public int idCheck(String id) { //아이디의 중복확인
 		int idFlag = 0;
@@ -97,6 +99,7 @@ public class MemberDao {
 		
 		return idFlag;
 	}
+	
 	
 	public int userCheck(String id, String pw) {
 		int userFlag = 0;
@@ -155,6 +158,7 @@ public class MemberDao {
 		return userFlag; 
 		//1이 반환되면 로그인 성공, 0이 반환되면 회원 아님, 2가 반환되면 비밀번호만 틀림
 	}
+	
 	
 	public MemberDto getMemberInfo(String id) {  // 아이디로 테이블을 검색하여 해당 아이디의 모든 정보 반환
 		
@@ -215,6 +219,7 @@ public class MemberDao {
 		}
 		return dto;
 	}
+	
 	
 	public int modifyMemberInfo(MemberDto dto) { //수정된 회원정도 DB에 다시넣기
 		int updateFlag = 0;
